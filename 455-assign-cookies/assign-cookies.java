@@ -9,11 +9,8 @@ class Solution {
             if(g[i]<=s[j]){
                 sat_child+=1;
                 i++;
-                j++;
             }
-            else{
-                j++;
-            }
+            j++;
         }
         return sat_child;
     }
