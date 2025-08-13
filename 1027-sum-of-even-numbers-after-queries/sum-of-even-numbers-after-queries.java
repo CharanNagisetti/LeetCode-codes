@@ -1,6 +1,5 @@
 class Solution {
     public int[] sumEvenAfterQueries(int[] nums, int[][] queries) {
-        int n=nums.length;
         int m=queries.length;
         int[] ans=new int[m];
         for(int i=0;i<m;i++){
