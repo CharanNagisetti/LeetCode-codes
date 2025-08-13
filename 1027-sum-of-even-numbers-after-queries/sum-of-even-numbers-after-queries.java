@@ -3,7 +3,6 @@ class Solution {
         int n=nums.length;
         int m=queries.length;
         int[] ans=new int[m];
-        int p=0;
         for(int i=0;i<m;i++){
             int pos=queries[i][1];
             nums[pos]+=queries[i][0];
