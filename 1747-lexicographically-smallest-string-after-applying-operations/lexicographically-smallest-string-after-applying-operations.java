@@ -14,7 +14,6 @@ class Solution {
             }
             String add=new String(chars);
             String rotated=curr.substring(curr.length()-b)+curr.substring(0,curr.length() - b);
-            System.out.print(add+" "+rotated+"  ");
             if(set.add(add)) q.offer(add);
             if(set.add(rotated)) q.offer(rotated);
         }
