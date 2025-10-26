@@ -1,35 +1,32 @@
 class Bank {
-    ArrayList<Long> accounts=new ArrayList<>();
+    long[] accounts;
     public Bank(long[] balance) {
-        for(long x: balance){
-            accounts.add(x);
-        }
+        this.accounts=balance;
     }
-    
+    private boolean isValid(int account) {
+        return account > 0 && account <= accounts.length;
+    }
+
     public boolean transfer(int account1, int account2, long money) {
+        if(!isValid(account1) || !isValid(account2)) return false;
         int x=account1-1;
         int y=account2-1;
-        if(account1>accounts.size() || account2>accounts.size()) return false;
-        if(accounts.get(x)<money){
-            return false;
-        }
-        accounts.set(x,accounts.get(x)-money);
-        accounts.set(y,accounts.get(y)+money);
+        if(accounts[x]<money) return false;
+        accounts[x]-=money;
+        accounts[y]+=money;
         return true;
     }
     
     public boolean deposit(int account, long money) {
-        if(account>accounts.size()) return false;
-        accounts.set(account-1,accounts.get(account-1)+money);
+        if(!isValid(account)) return false;
+        accounts[account-1]+=money;
         return true;
     }
     
     public boolean withdraw(int account, long money) {
-        if(account>accounts.size()) return false;
-        if(accounts.get(account-1)<money){
-            return false;
-        }
-        accounts.set(account-1,accounts.get(account-1)-money);
+        if(!isValid(account)) return false;
+        if(accounts[account-1]<money) return false;
+        accounts[account-1]-=money;
         return true;
     }
 }
