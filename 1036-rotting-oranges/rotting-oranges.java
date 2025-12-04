@@ -1,46 +1,40 @@
 class Solution {
     public int orangesRotting(int[][] grid) {
-        if(grid == null || grid.length == 0) return 0;
-        int rows = grid.length;
-        int cols = grid[0].length;
-        Queue<int[]> queue = new LinkedList<>();
-        int count_fresh = 0;
-        for(int i = 0 ; i < rows ; i++) {
-            for(int j = 0 ; j < cols ; j++) {
-                if(grid[i][j] == 2) {
-                    queue.offer(new int[]{i , j});
-                }
-                if(grid[i][j] != 0) {
-                    count_fresh++;
-                }
+        int m=grid.length;
+        int n=grid[0].length;
+        int x=0;
+        int y=0;
+        int fresh=0;
+        int minutes=0;
+        Queue<int[]> q=new LinkedList<>();
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==2) q.add(new int[]{i,j,minutes});
+                if(grid[i][j]==1) fresh+=1;
             }
         }
-       
-        if(count_fresh == 0) return 0;
-        int countMin = 0, cnt = 0;
-        int dx[] = {0, 0, 1, -1};
-        int dy[] = {1, -1, 0, 0};
-        
-        while(!queue.isEmpty()) {
-            int size = queue.size();
-            cnt += size; 
-            for(int i = 0 ; i < size ; i++) {
-                int[] point = queue.poll();
-                for(int j = 0;j<4;j++) {
-                    int x = point[0] + dx[j];
-                    int y = point[1] + dy[j];
-                    
-                    if(x < 0 || y < 0 || x >= rows || y >= cols || grid[x][y] == 0 || 
-                    grid[x][y] == 2) continue;
-                    
-                    grid[x][y] = 2;
-                    queue.offer(new int[]{x , y});
+        int[] nx={0,0,1,-1};
+        int[] ny={1,-1,0,0};
+        int convFresh=0;
+        while(!q.isEmpty()){
+            int[] curr=q.poll();
+            int a=curr[0];
+            int b=curr[1];
+            int min=curr[2];
+            boolean flag=false;
+            for(int i=0;i<4;i++){
+                int x1=a+nx[i];
+                int y1=b+ny[i];
+                if(x1>=0 && x1<m && y1>=0 && y1<n && grid[x1][y1]==1){
+                    q.add(new int[]{x1,y1,min+1});
+                    grid[x1][y1]=2;
+                    convFresh+=1;
+                    flag=true;
                 }
             }
-            if(queue.size() != 0) {
-                countMin++;
-            }
+            if(flag) minutes=min+1;
         }
-        return count_fresh == cnt ? countMin : -1;
+        if(convFresh!=fresh) return -1;
+        return minutes;
     }
 }
