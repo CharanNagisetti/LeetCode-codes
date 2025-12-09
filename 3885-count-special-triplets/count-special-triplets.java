@@ -1,34 +1,25 @@
 class Solution {
     public int specialTriplets(int[] nums) {
-        final long MOD = 1_000_000_007;
-        int n = nums.length;
+        long mod=1_000_000_007;
+        int n=nums.length;
+        Map<Long, Long> leftMap=new HashMap<>();
+        Map<Long, Long> rightMap=new HashMap<>();
 
-        Map<Long, Long> right = new HashMap<>();
-        Map<Long, Long> left = new HashMap<>();
-
-        // Fill right map initially with all frequency
-        for (long x : nums) {
-            right.put(x, right.getOrDefault(x, 0L) + 1);
+        for(long x: nums){
+            rightMap.put(x, rightMap.getOrDefault(x,0L)+1);
         }
 
-        long ans = 0;
+        long cnt=0;
+        for(int i=0;i<n;i++){
+            long num=nums[i];
+            rightMap.put(num,rightMap.get(num)-1);
+            long target=num*2;
+            long left=leftMap.getOrDefault(target,0L);
+            long right=rightMap.getOrDefault(target,0L);
 
-        // iterate j
-        for (int j = 0; j < n; j++) {
-            long x = nums[j];
-            right.put(x, right.get(x) - 1); // element now becomes middle, so remove one from right
-
-            long target = x * 2;
-
-            long leftCount = left.getOrDefault(target, 0L);
-            long rightCount = right.getOrDefault(target, 0L);
-
-            ans = (ans + (leftCount * rightCount) % MOD) % MOD;
-
-            // move nums[j] to left map
-            left.put(x, left.getOrDefault(x, 0L) + 1);
+            cnt=(cnt+(left*right)%mod)%mod;
+            leftMap.put(num,leftMap.getOrDefault(num,0L)+1);
         }
-
-        return (int) ans;
+        return (int) cnt;
     }
 }
