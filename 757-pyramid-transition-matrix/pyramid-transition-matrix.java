@@ -1,17 +1,24 @@
 class Solution {
-    public boolean backTrack(String bottom,Map<String, List<Character>> map, StringBuilder sb, int idx){
+    public boolean backTrack(String bottom,Map<String, List<Character>> map, StringBuilder sb, int idx, Set<String> failed){
+        if (idx == 0 && sb.length() == 0 && failed.contains(bottom)) return false;
         if(bottom.length()==1) return true;
         if(sb.length()==bottom.length()-1){
             bottom=sb.toString();
             sb=new StringBuilder();
-            return backTrack(bottom,map,sb,0);
+            return backTrack(bottom,map,sb,0,failed);
         }
         String curr=bottom.substring(idx,idx+2);
-        if(!map.containsKey(curr)) return false;
+        if(!map.containsKey(curr)){
+            failed.add(bottom);
+            return false;
+        }
         for(char ch: map.get(curr)){
             sb.append(ch);
-            if(backTrack(bottom,map,sb,idx+1)) return true;
+            if(backTrack(bottom,map,sb,idx+1,failed)) return true;
             sb.deleteCharAt(sb.length()-1);
+        }
+        if (idx == 0 && sb.length() == 0) {
+            failed.add(bottom);
         }
         return false;
     }
@@ -23,6 +30,7 @@ class Solution {
             map.computeIfAbsent(str,k -> new ArrayList<>()).add(c);
         }
         StringBuilder sb=new StringBuilder();
-        return backTrack(bottom,map,sb,0);
+        Set<String> failed=new HashSet<>();
+        return backTrack(bottom,map,sb,0,failed);
     }
 }
