@@ -20,8 +20,8 @@ class Solution {
             int size=list.size();
             if(size<2) continue;
             int sum=0;
-            int max1=Integer.MIN_VALUE;
-            int max2=Integer.MIN_VALUE;
+            int max1=-1;
+            int max2=-1;
             for(int y: list){
                 if(y>max1){
                     max2=max1;
