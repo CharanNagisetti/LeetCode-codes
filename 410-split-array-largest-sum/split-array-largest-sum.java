@@ -1,35 +1,44 @@
 class Solution {
     public int splitArray(int[] nums, int k) {
-        if(nums.length<k) return -1;
-        int min=Integer.MIN_VALUE;
-        int max=0;
-        for(int i=0;i<nums.length;i++){
-            if(min<=nums[i]){
-                min=nums[i];
+        int n=nums.length;
+        int min=nums[0];
+        int sum=0;
+        int max=nums[0];
+        for(int x: nums){
+            if(min>x){
+                min=x;
             }
-            max+=nums[i];
-        }
-        while(min<=max){
-            int mid=(min+max)/2;
-            int count = func(nums, mid);
-            if(count>k){ min=mid+1;}
-            else{
-                max=mid-1;
+            if(max<x){
+                max=x;
             }
+            sum+=x;
         }
-        return min;
+        if(n==k) return max;
+        int left=max;
+        int right=sum;
+        int ans=0;
+        while(left<=right){
+            int mid=left+(right-left)/2;
+            int counter=numSplits(nums,mid);
+            if(counter<=k){ 
+                right=mid-1;
+                ans=mid;
+            }
+            else left=mid+1;
+        }
+        return ans;
     }
-    public int func(int[] nums, int k){
-        int num=1;
-        int allo_num=0;
-        for(int i=0;i<nums.length;i++){
-            if(allo_num+nums[i]<=k){
-                allo_num+=nums[i];
+    public int numSplits(int[] nums, int check){
+        int sum=0;
+        int cnt=0;
+        for(int x: nums){
+            if(sum+x<=check){
+                sum+=x;
             }else{
-                num++;
-                allo_num=nums[i];
+                sum=x;
+                cnt++;
             }
         }
-        return num;
+        return cnt+1;
     }
 }
